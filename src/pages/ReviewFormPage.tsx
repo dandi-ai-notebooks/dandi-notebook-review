@@ -352,6 +352,10 @@ const ReviewPanel = ({
                             responses: newResponses,
                           },
                         });
+
+                        // Adjust height after value change
+                        e.target.style.height = 'auto';
+                        e.target.style.height = e.target.scrollHeight + 'px';
                       }}
                     />
                     <button

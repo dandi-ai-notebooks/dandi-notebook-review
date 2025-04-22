@@ -3,8 +3,7 @@ import mongoose from 'mongoose';
 const NotebookReviewSchema = new mongoose.Schema({
   notebook_uri: {
     type: String,
-    required: true,
-    unique: true,
+    required: true
   },
   reviewer_email: {
     type: String,
