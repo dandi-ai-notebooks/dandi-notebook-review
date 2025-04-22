@@ -64,10 +64,6 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
     }
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   if (!user) {
     return (
       <div className="not-logged-in">
@@ -78,6 +74,10 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
         </button>
       </div>
     )
+  }
+
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
   if (!review) {
