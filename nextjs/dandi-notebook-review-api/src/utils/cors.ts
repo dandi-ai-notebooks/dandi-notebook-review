@@ -29,7 +29,7 @@ export function corsOptions(origin: string | undefined) {
   });
 }
 
-export function corsify<T>(response: NextResponse<T>, origin: string | null): NextResponse<T> {
+export function corsify<T>(response: NextResponse<T>, origin: string | undefined): NextResponse<T> {
   const headers = getCorsHeaders(origin);
   Object.entries(headers).forEach(([key, value]) => {
     response.headers.set(key, value);
@@ -37,7 +37,7 @@ export function corsify<T>(response: NextResponse<T>, origin: string | null): Ne
   return response;
 }
 
-export function corsResponse<T>(data: T, init?: ResponseInit, origin?: string): NextResponse<T> {
+export function corsResponse<T>(data: T, init: ResponseInit | undefined, origin: string | undefined): NextResponse<T> {
   const response = NextResponse.json(data, init);
   return corsify(response, origin);
 }
