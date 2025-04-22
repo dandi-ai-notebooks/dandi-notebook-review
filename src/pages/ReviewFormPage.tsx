@@ -73,7 +73,7 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
       <div className="not-logged-in">
         <h2>Login Required</h2>
         <p>You need to provide an API token to access this review page.</p>
-        <button onClick={() => navigate("/dandi-notebook-review/login")}>
+        <button onClick={() => navigate("/dandi-notebook-review/")}>
           Go to Login
         </button>
       </div>
