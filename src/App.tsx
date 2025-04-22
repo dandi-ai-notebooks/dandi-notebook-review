@@ -105,11 +105,11 @@ function App() {
           />
           <Route
             path="/dandi-notebook-review/reviews"
-            element={user ? <ReviewsPage user={user} /> : <Navigate to="/" />}
+            element={user ? <ReviewsPage user={user} /> : <Navigate to="/dandi-notebook-review/" />}
           />
           <Route
             path="/dandi-notebook-review/review"
-            element={user ? <ReviewFormPage user={user} /> : <Navigate to="/" />}
+            element={<ReviewFormPage user={user || undefined} />}
           />
           <Route
           path="/dandi-notebook-review/admin"

@@ -6,7 +6,7 @@ import questionsData from "../data/questions.json";
 import "./ReviewFormPage.css";
 
 interface ReviewFormPageProps {
-  user: User;
+  user: User | undefined;
 }
 
 function ReviewFormPage({ user }: ReviewFormPageProps) {
@@ -17,6 +17,7 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!user) return;
     const fetchReview = async () => {
       try {
         const response = await fetch(`${API_BASE_URL}/reviews`, {
@@ -38,11 +39,12 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
       }
     };
     fetchReview();
-  }, [uri, user.email]);
+  }, [uri, user]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!review) return;
+    if (!user) return;
 
     try {
       const response = await fetch(
@@ -64,6 +66,18 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
 
   if (loading) {
     return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    return (
+      <div className="not-logged-in">
+        <h2>Login Required</h2>
+        <p>You need to provide an API token to access this review page.</p>
+        <button onClick={() => navigate("/dandi-notebook-review/login")}>
+          Go to Login
+        </button>
+      </div>
+    )
   }
 
   if (!review) {
