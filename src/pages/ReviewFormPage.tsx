@@ -11,7 +11,7 @@ interface ReviewFormPageProps {
 
 function ReviewFormPage({ user }: ReviewFormPageProps) {
   const [searchParams] = useSearchParams();
-  const uri = searchParams.get("uri");
+  const uri = searchParams.get("url");
   const navigate = useNavigate();
   const [review, setReview] = useState<NotebookReview | null>(null);
   const [loading, setLoading] = useState(true);
