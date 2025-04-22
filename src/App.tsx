@@ -1,5 +1,5 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { API_BASE_URL } from './api/config';
 import { AdminState } from './api/types';
 import LoginPage from './pages/LoginPage';
@@ -9,6 +9,24 @@ import AdminPage from './pages/AdminPage';
 import { User } from './api/types';
 
 function App() {
+  const [windowDimensions, setWindowDimensions] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  });
+  const headerHeight = 60; // Fixed header height in pixels
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const [user, setUser] = useState<User | null>(() => {
     const saved = localStorage.getItem('user');
     return saved ? JSON.parse(saved) : null;
@@ -80,14 +98,14 @@ function App() {
     <Router>
       <div className="app">
         <header>
-          <h1>DANDI Notebook Review</h1>
+          <h1><Link to="/dandi-notebook-review/" style={{ textDecoration: 'none', color: 'inherit' }}>DANDI Notebook Review</Link></h1>
           {(user || adminState) && (
             <div className="header-actions">
               {user && (
-                <span className="user-info">Logged in as: {user.email}</span>
+                <span className="user-info">Logged in as {user.email}&nbsp;&nbsp;&nbsp;</span>
               )}
               {adminState && (
-                <span className="user-info">Admin Mode</span>
+                <span className="user-info">Admin Mode&nbsp;&nbsp;&nbsp;</span>
               )}
               <button onClick={handleLogout} className="logout-button">
                 {adminState ? 'Admin Logout' : 'Logout'}
@@ -109,7 +127,7 @@ function App() {
           />
           <Route
             path="/dandi-notebook-review/review"
-            element={<ReviewFormPage user={user || undefined} />}
+            element={<ReviewFormPage user={user || undefined} onLogin={handleLogin} width={windowDimensions.width} height={windowDimensions.height - headerHeight} />}
           />
           <Route
           path="/dandi-notebook-review/admin"

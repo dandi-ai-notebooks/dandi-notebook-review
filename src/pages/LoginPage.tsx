@@ -49,6 +49,13 @@ function LoginPage({ onLogin, isAdminLogin = false }: LoginPageProps) {
           {isLoading ? 'Logging in...' : 'Login'}
         </button>
       </form>
+      {!isAdminLogin && (
+        <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+          <a href="/dandi-notebook-review/admin" style={{ color: 'var(--primary-color)', textDecoration: 'none' }}>
+            Admin Login
+          </a>
+        </div>
+      )}
     </div>
   );
 }

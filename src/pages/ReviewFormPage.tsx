@@ -1,15 +1,102 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { User, NotebookReview } from "../api/types";
 import { API_BASE_URL, createHeaders } from "../api/config";
 import questionsData from "../data/questions.json";
 import "./ReviewFormPage.css";
+import HorizontalSplitter from "../components/HorizontalSplitter";
+
+interface LoginComponentProps {
+  onLogin: (token: string) => Promise<void>;
+}
+
+function LoginComponent({ onLogin }: LoginComponentProps) {
+  const [apiToken, setApiToken] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setIsLoading(true);
+
+    try {
+      await onLogin(apiToken);
+    } catch (err) {
+      console.error("Login error:", err);
+      setError("Invalid API token. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="not-logged-in login-page">
+      <form
+        onSubmit={handleSubmit}
+        style={{ maxWidth: "400px", margin: "0 auto", padding: "2rem" }}
+      >
+        <h2>Login required to access this page</h2>
+        <div className="form-group" style={{ marginBottom: "1rem" }}>
+          <label
+            htmlFor="apiToken"
+            style={{ display: "block", marginBottom: "0.5rem" }}
+          >
+            API Token:
+          </label>
+          <input
+            type="text"
+            id="apiToken"
+            value={apiToken}
+            onChange={(e) => setApiToken(e.target.value)}
+            placeholder="Enter your API token"
+            required
+            style={{
+              width: "100%",
+              padding: "0.5rem",
+              border: "1px solid var(--border-color)",
+              borderRadius: "4px",
+              fontSize: "1rem",
+            }}
+          />
+        </div>
+        {error && (
+          <div
+            className="error-message"
+            style={{ color: "red", marginBottom: "1rem" }}
+          >
+            {error}
+          </div>
+        )}
+        <button
+          type="submit"
+          disabled={isLoading}
+          style={{
+            width: "100%",
+            padding: "0.75rem",
+            backgroundColor: "var(--primary-color)",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            fontSize: "1rem",
+            cursor: "pointer",
+          }}
+        >
+          {isLoading ? "Logging in..." : "Login"}
+        </button>
+      </form>
+    </div>
+  );
+}
 
 interface ReviewFormPageProps {
   user: User | undefined;
+  onLogin: (token: string) => Promise<void>;
+  width: number;
+  height: number;
 }
 
-function ReviewFormPage({ user }: ReviewFormPageProps) {
+function ReviewFormPage({ user, onLogin, width, height }: ReviewFormPageProps) {
   const [searchParams] = useSearchParams();
   const uri = searchParams.get("url");
   const navigate = useNavigate();
@@ -55,7 +142,6 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
           body: JSON.stringify(review),
         }
       );
-
       if (response.ok) {
         navigate("/dandi-notebook-review/reviews");
       }
@@ -65,15 +151,7 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
   };
 
   if (!user) {
-    return (
-      <div className="not-logged-in">
-        <h2>Login Required</h2>
-        <p>You need to provide an API token to access this review page.</p>
-        <button onClick={() => navigate("/dandi-notebook-review/")}>
-          Go to Login
-        </button>
-      </div>
-    )
+    return <LoginComponent onLogin={onLogin} />;
   }
 
   if (loading) {
@@ -89,15 +167,15 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
           onClick={async () => {
             try {
               const response = await fetch(`${API_BASE_URL}/reviews`, {
-                method: 'POST',
+                method: "POST",
                 headers: createHeaders(user.email, user.apiToken),
                 body: JSON.stringify({
                   notebook_uri: uri,
                   review: {
-                    status: 'pending',
-                    responses: []
-                  }
-                })
+                    status: "pending",
+                    responses: [],
+                  },
+                }),
               });
 
               if (response.ok) {
@@ -105,7 +183,7 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
                 setReview(newReview);
               }
             } catch (error) {
-              console.error('Failed to create review:', error);
+              console.error("Failed to create review:", error);
             }
           }}
           className="create-review-button"
@@ -113,7 +191,7 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
           Create New Review
         </button>
         <button
-          onClick={() => navigate('/dandi-notebook-review/s')}
+          onClick={() => navigate("/dandi-notebook-review/s")}
           className="cancel-button"
         >
           Cancel
@@ -122,21 +200,69 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
     );
   }
 
-  const nbfiddleNotebookUrl = `https://nbfiddle.app?url=${review.notebook_uri}&renderonly=1`;
-  // const nbfiddleNotebookUrl = `http://localhost:5174?url=${review.notebook_uri}&renderonly=1`;
+  const nbfiddleNotebookUrl = `https://nbfiddle.app?url=${review.notebook_uri}&renderonly=1&fullwidth=1`;
+  // const nbfiddleNotebookUrl = `http://localhost:5174?url=${review.notebook_uri}&renderonly=1&fullwidth=1`;
 
   return (
-    <div className="review-form-page">
-      <div className="review-panel">
+    <HorizontalSplitter
+      width={width}
+      height={height}
+      initialSplitterPosition={Math.min(width / 2, 450)}
+    >
+      <ReviewPanel
+        onSubmit={handleSubmit}
+        review={review}
+        setReview={setReview}
+        user={user}
+        width={0}
+        height={0}
+      />
+
+      <div className="notebook-panel">
+        <iframe
+          src={nbfiddleNotebookUrl}
+          title="Notebook Preview"
+          width="100%"
+          height="100%"
+        />
+      </div>
+    </HorizontalSplitter>
+  );
+}
+
+const ReviewPanel = ({
+  onSubmit,
+  review,
+  setReview,
+  user,
+  width,
+  height
+}: {
+  onSubmit: (e: FormEvent) => void;
+  review: NotebookReview;
+  setReview: React.Dispatch<React.SetStateAction<NotebookReview | null>>;
+  user: User;
+  width: number;
+  height: number;
+}) => {
+  const navigate = useNavigate();
+  return (
+    <div style={{position: "relative", width, height, overflowY: "auto"}}>
+      <div style={{ padding: "1rem" }}>
         <h2>Review Dandiset Notebook</h2>
         <p className="review-instructions">
-          To review this notebook:<br /><br />
-          1. Examine the notebook content in the panel on the right.<br />
-          2. Answer each review question below. Optionally provide rationale for your choices and feel free to reference cell numbers.<br />
-          3. Click "Finalize Review" when complete.<br />
+          To review this notebook:
+          <br />
+          <br />
+          1. Examine the notebook content in the panel on the right.
+          <br />
+          2. Answer each review question below. Optionally provide rationale for
+          your choices and feel free to reference cell numbers.
+          <br />
+          3. Click "Finalize Review" when complete.
+          <br />
         </p>
-        <form onSubmit={handleSubmit}>
-
+        <form onSubmit={onSubmit}>
           <div className="form-group questions-list">
             {questionsData.questions.map((question) => {
               const response = review.review.responses.find(
@@ -169,7 +295,7 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
                               newResponses.push({
                                 question_id: question.id,
                                 response: String(option.value),
-                                rationale: '',
+                                rationale: "",
                               });
                             }
                             setReview({
@@ -189,7 +315,7 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
                     <textarea
                       className="rationale-textarea"
                       placeholder="Optional: Rationale for your response"
-                      value={response?.rationale || ''}
+                      value={response?.rationale || ""}
                       disabled={review.review.status === "completed"}
                       onChange={(e) => {
                         const newResponses = [...review.review.responses];
@@ -199,13 +325,13 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
                         if (existingIndex >= 0) {
                           newResponses[existingIndex] = {
                             ...newResponses[existingIndex],
-                            rationale: e.target.value
+                            rationale: e.target.value,
                           };
                         } else if (response?.response) {
                           newResponses.push({
                             question_id: question.id,
                             response: response.response,
-                            rationale: e.target.value
+                            rationale: e.target.value,
                           });
                         }
                         setReview({
@@ -259,7 +385,9 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
 
                   try {
                     const response = await fetch(
-                      `${API_BASE_URL}/reviews?id=${encodeURIComponent(updatedReview.notebook_uri)}`,
+                      `${API_BASE_URL}/reviews?id=${encodeURIComponent(
+                        updatedReview.notebook_uri
+                      )}`,
                       {
                         method: "PUT",
                         headers: createHeaders(user.email, user.apiToken),
@@ -296,24 +424,25 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
           </div>
 
           <div className="button-group">
-            <button type="submit" disabled={review.review.status === "completed"}>Save Changes</button>
-            <button type="button" onClick={() => navigate("/dandi-notebook-review/reviews")}>
+            <button type="submit" disabled={review.review.status === "completed"}>
+              Save Changes
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate("/dandi-notebook-review/reviews")}
+            >
               Cancel Changes
             </button>
           </div>
         </form>
-      </div>
-
-      <div className="notebook-panel">
-        <iframe
-          src={nbfiddleNotebookUrl}
-          title="Notebook Preview"
-          width="100%"
-          height="100%"
-        />
+        <hr />
+        <br />
+        <br />
+        <br />
+        <br />
       </div>
     </div>
   );
-}
+};
 
 export default ReviewFormPage;
