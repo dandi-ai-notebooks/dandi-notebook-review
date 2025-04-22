@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 const ALLOWED_ORIGINS = [
   'http://localhost:5173',
-  'https://dandi-notebook-review-api.vercel.app'
+  'https://dandi-ai-notebooks.github.io',
 ];
 
 const CORS_BASE_HEADERS = {
@@ -12,23 +12,24 @@ const CORS_BASE_HEADERS = {
 };
 
 function getCorsHeaders(origin?: string | null) {
-  if (!origin || !ALLOWED_ORIGINS.includes(origin)) {
-    origin = ALLOWED_ORIGINS[0];
+  if (origin && ALLOWED_ORIGINS.includes(origin)) {
+    return {
+      ...CORS_BASE_HEADERS,
+      'Access-Control-Allow-Origin': origin
+    };
   }
-  return {
-    ...CORS_BASE_HEADERS,
-    'Access-Control-Allow-Origin': origin
-  };
+  else {
+    return {} as Record<string, string>;
+  }
 }
 
-export function corsOptions() {
-  const origin = null; // In OPTIONS requests we don't have access to origin
+export function corsOptions(origin: string | undefined) {
   return new NextResponse(null, {
     headers: getCorsHeaders(origin),
   });
 }
 
-export function corsify<T>(response: NextResponse<T>, origin?: string | null): NextResponse<T> {
+export function corsify<T>(response: NextResponse<T>, origin: string | null): NextResponse<T> {
   const headers = getCorsHeaders(origin);
   Object.entries(headers).forEach(([key, value]) => {
     response.headers.set(key, value);

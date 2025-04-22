@@ -2,8 +2,8 @@ import { NextRequest } from 'next/server';
 import { ADMIN_TOKEN } from '../../../../config/admin';
 import { corsOptions, corsResponse } from '../../../../utils/cors';
 
-export async function OPTIONS() {
-  return corsOptions();
+export async function OPTIONS(request: NextRequest) {
+  return corsOptions(request.headers.get('origin') || undefined);
 }
 
 export async function POST(request: NextRequest) {

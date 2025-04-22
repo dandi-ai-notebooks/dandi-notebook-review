@@ -17,8 +17,8 @@ async function validateUserToken(userEmail: string, apiToken: string) {
   return { user };
 }
 
-export async function OPTIONS() {
-  return corsOptions();
+export async function OPTIONS(request: NextRequest) {
+  return corsOptions(request.headers.get('origin') || undefined);
 }
 
 export async function GET(request: NextRequest) {
@@ -26,6 +26,7 @@ export async function GET(request: NextRequest) {
     await dbConnect();
     const userEmail = request.headers.get('X-User-Email');
     const origin = request.headers.get('origin') || undefined;
+    console.log('--- origin:', origin);
 
     const reviews = await NotebookReview.find({ reviewer_email: userEmail });
     return corsResponse(reviews, undefined, origin);
