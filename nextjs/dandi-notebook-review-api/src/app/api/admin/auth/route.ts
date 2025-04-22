@@ -12,12 +12,12 @@ export async function POST(request: NextRequest) {
     const { token } = data;
 
     if (!token || token !== ADMIN_TOKEN) {
-      return corsResponse({ error: 'Invalid admin token' }, { status: 401 });
+      return corsResponse({ error: 'Invalid admin token' }, { status: 401 }, request.headers.get('origin') || undefined);
     }
 
-    return corsResponse({ authenticated: true });
+    return corsResponse({ authenticated: true }, undefined, request.headers.get('origin') || undefined);
   } catch (error) {
     console.error('Error authenticating admin:', error);
-    return corsResponse({ error: 'Internal Server Error' }, { status: 500 });
+    return corsResponse({ error: 'Internal Server Error' }, { status: 500 }, request.headers.get('origin') || undefined);
   }
 }

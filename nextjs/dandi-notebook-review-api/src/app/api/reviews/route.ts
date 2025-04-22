@@ -25,12 +25,13 @@ export async function GET(request: NextRequest) {
   try {
     await dbConnect();
     const userEmail = request.headers.get('X-User-Email');
+    const origin = request.headers.get('origin') || undefined;
 
     const reviews = await NotebookReview.find({ reviewer_email: userEmail });
-    return corsResponse(reviews);
+    return corsResponse(reviews, undefined, origin);
   } catch (error) {
     console.error('Error fetching reviews:', error);
-    return corsResponse({ error: 'Internal Server Error' }, { status: 500 });
+    return corsResponse({ error: 'Internal Server Error' }, { status: 500 }, request.headers.get('origin') || undefined);
   }
 }
 
@@ -42,7 +43,7 @@ export async function POST(request: NextRequest) {
 
     const validation = await validateUserToken(userEmail!, apiToken!);
     if ('error' in validation) {
-      return corsResponse({ error: validation.error }, { status: validation.status });
+      return corsResponse({ error: validation.error }, { status: validation.status }, request.headers.get('origin') || undefined);
     }
 
     const data = await request.json();
@@ -55,10 +56,10 @@ export async function POST(request: NextRequest) {
     });
 
     await review.save();
-    return corsResponse(review);
+    return corsResponse(review, undefined, request.headers.get('origin') || undefined);
   } catch (error) {
     console.error('Error creating review:', error);
-    return corsResponse({ error: 'Internal Server Error' }, { status: 500 });
+    return corsResponse({ error: 'Internal Server Error' }, { status: 500 }, request.headers.get('origin') || undefined);
   }
 }
 
@@ -70,7 +71,7 @@ export async function DELETE(request: NextRequest) {
 
     const validation = await validateUserToken(userEmail!, apiToken!);
     if ('error' in validation) {
-      return corsResponse({ error: validation.error }, { status: validation.status });
+      return corsResponse({ error: validation.error }, { status: validation.status }, request.headers.get('origin') || undefined);
     }
 
     const searchParams = request.nextUrl.searchParams;
@@ -82,13 +83,13 @@ export async function DELETE(request: NextRequest) {
     });
 
     if (!review) {
-      return corsResponse({ error: 'Review not found' }, { status: 404 });
+      return corsResponse({ error: 'Review not found' }, { status: 404 }, request.headers.get('origin') || undefined);
     }
 
-    return corsResponse({ message: 'Review deleted successfully' });
+    return corsResponse({ message: 'Review deleted successfully' }, undefined, request.headers.get('origin') || undefined);
   } catch (error) {
     console.error('Error deleting review:', error);
-    return corsResponse({ error: 'Internal Server Error' }, { status: 500 });
+    return corsResponse({ error: 'Internal Server Error' }, { status: 500 }, request.headers.get('origin') || undefined);
   }
 }
 
@@ -100,7 +101,7 @@ export async function PUT(request: NextRequest) {
 
     const validation = await validateUserToken(userEmail!, apiToken!);
     if ('error' in validation) {
-      return corsResponse({ error: validation.error }, { status: validation.status });
+      return corsResponse({ error: validation.error }, { status: validation.status }, request.headers.get('origin') || undefined);
     }
 
     const searchParams = request.nextUrl.searchParams;
@@ -119,12 +120,12 @@ export async function PUT(request: NextRequest) {
     );
 
     if (!review) {
-      return corsResponse({ error: 'Review not found' }, { status: 404 });
+      return corsResponse({ error: 'Review not found' }, { status: 404 }, request.headers.get('origin') || undefined);
     }
 
-    return corsResponse(review);
+    return corsResponse(review, undefined, request.headers.get('origin') || undefined);
   } catch (error) {
     console.error('Error updating review:', error);
-    return corsResponse({ error: 'Internal Server Error' }, { status: 500 });
+    return corsResponse({ error: 'Internal Server Error' }, { status: 500 }, request.headers.get('origin') || undefined);
   }
 }
