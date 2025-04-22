@@ -117,10 +117,9 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
         <h2>Review Dandiset Notebook</h2>
         <p className="review-instructions">
           To review this notebook:<br /><br />
-          1. Examine the notebook content in the panel on the right<br />
-          2. Answer each review question below<br />
-          3. Click "Finalize Review" when complete<br />
-          4. Save your changes
+          1. Examine the notebook content in the panel on the right.<br />
+          2. Answer each review question below. Optionally provide rationale for your choices and feel free to reference cell numbers.<br />
+          3. Click "Finalize Review" when complete.<br />
         </p>
         <form onSubmit={handleSubmit}>
 
