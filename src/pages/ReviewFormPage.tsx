@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { User, NotebookReview } from "../api/types";
 import { API_BASE_URL, createHeaders } from "../api/config";
+import questionsData from "../data/questions.json";
+import "./ReviewFormPage.css";
 
 interface ReviewFormPageProps {
   user: User;
@@ -18,7 +20,7 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
     const fetchReview = async () => {
       try {
         const response = await fetch(`${API_BASE_URL}/reviews`, {
-          headers: createHeaders(user.email),
+          headers: createHeaders(user.email, user.apiToken),
         });
         if (response.ok) {
           const reviews = await response.json();
@@ -47,7 +49,7 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
         `${API_BASE_URL}/reviews?id=${encodeURIComponent(review.notebook_uri)}`,
         {
           method: "PUT",
-          headers: createHeaders(user.email),
+          headers: createHeaders(user.email, user.apiToken),
           body: JSON.stringify(review),
         }
       );
@@ -74,7 +76,7 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
             try {
               const response = await fetch(`${API_BASE_URL}/reviews`, {
                 method: 'POST',
-                headers: createHeaders(user.email),
+                headers: createHeaders(user.email, user.apiToken),
                 body: JSON.stringify({
                   notebook_uri: uri,
                   review: {
@@ -106,76 +108,125 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
     );
   }
 
-  // const nbfiddleNotebookUrl = `https://nbfiddle.app?url=${review.notebook_uri}`;
-  const nbfiddleNotebookUrl = `http://localhost:5174?url=${review.notebook_uri}&renderonly=1`;
+  const nbfiddleNotebookUrl = `https://nbfiddle.app?url=${review.notebook_uri}&renderonly=1`;
+  // const nbfiddleNotebookUrl = `http://localhost:5174?url=${review.notebook_uri}&renderonly=1`;
 
   return (
     <div className="review-form-page">
       <div className="review-panel">
-        <h2>Review Form</h2>
+        <h2>Review Dandiset Notebook</h2>
+        <p className="review-instructions">
+          To review this notebook:<br /><br />
+          1. Examine the notebook content in the panel on the right<br />
+          2. Answer each review question below<br />
+          3. Click "Finalize Review" when complete<br />
+          4. Save your changes
+        </p>
         <form onSubmit={handleSubmit}>
 
-          <div className="form-group">
-            <label>Responses:</label>
-            {review.review.responses.map((response, index) => (
-              <div key={response.question_id} className="response-item">
-                <input
-                  type="text"
-                  value={response.question_id}
-                  onChange={(e) => {
-                    const newResponses = [...review.review.responses];
-                    newResponses[index] = {
-                      ...newResponses[index],
-                      question_id: e.target.value,
-                    };
-                    setReview({
-                      ...review,
-                      review: {
-                        ...review.review,
-                        responses: newResponses,
-                      },
-                    });
-                  }}
-                  placeholder="Question ID"
-                />
-                <input
-                  type="text"
-                  value={String(response.response)}
-                  onChange={(e) => {
-                    const newResponses = [...review.review.responses];
-                    newResponses[index] = {
-                      ...newResponses[index],
-                      response: e.target.value,
-                    };
-                    setReview({
-                      ...review,
-                      review: {
-                        ...review.review,
-                        responses: newResponses,
-                      },
-                    });
-                  }}
-                  placeholder="Response"
-                />
-              </div>
-            ))}
-            <button
-              type="button"
-              onClick={() =>
-                setReview({
-                  ...review,
-                  review: {
-                    ...review.review,
-                    responses: [
-                      ...review.review.responses,
-                      { question_id: "", response: "" },
-                    ],
-                  },
-                })
-              }
-            >
-              Add Response
-            </button>
+          <div className="form-group questions-list">
+            {questionsData.questions.map((question) => {
+              const response = review.review.responses.find(
+                (r) => r.question_id === question.id
+              );
+              return (
+                <div key={question.id} className="question-item">
+                  <h3>{question.text}</h3>
+                  <div className="radio-group">
+                    {question.options.map((option) => (
+                      <label key={option.value} className="radio-label">
+                        <input
+                          type="radio"
+                          name={question.id}
+                          value={option.value}
+                          checked={response?.response === String(option.value)}
+                          disabled={review.review.status === "completed"}
+                          onChange={() => {
+                            const newResponses = [...review.review.responses];
+                            const existingIndex = newResponses.findIndex(
+                              (r) => r.question_id === question.id
+                            );
+                            if (existingIndex >= 0) {
+                              newResponses[existingIndex] = {
+                                ...newResponses[existingIndex],
+                                question_id: question.id,
+                                response: String(option.value),
+                              };
+                            } else {
+                              newResponses.push({
+                                question_id: question.id,
+                                response: String(option.value),
+                                rationale: '',
+                              });
+                            }
+                            setReview({
+                              ...review,
+                              review: {
+                                ...review.review,
+                                responses: newResponses,
+                              },
+                            });
+                          }}
+                        />
+                        &nbsp;&nbsp;[{option.value}] {option.label}
+                      </label>
+                    ))}
+                  </div>
+                  <div className="rationale-field">
+                    <textarea
+                      className="rationale-textarea"
+                      placeholder="Optional: Rationale for your response"
+                      value={response?.rationale || ''}
+                      disabled={review.review.status === "completed"}
+                      onChange={(e) => {
+                        const newResponses = [...review.review.responses];
+                        const existingIndex = newResponses.findIndex(
+                          (r) => r.question_id === question.id
+                        );
+                        if (existingIndex >= 0) {
+                          newResponses[existingIndex] = {
+                            ...newResponses[existingIndex],
+                            rationale: e.target.value
+                          };
+                        } else if (response?.response) {
+                          newResponses.push({
+                            question_id: question.id,
+                            response: response.response,
+                            rationale: e.target.value
+                          });
+                        }
+                        setReview({
+                          ...review,
+                          review: {
+                            ...review.review,
+                            responses: newResponses,
+                          },
+                        });
+                      }}
+                    />
+                    <button
+                      type="button"
+                      className="clear-button"
+                      disabled={review.review.status === "completed"}
+                      onClick={() => {
+                        const newResponses = review.review.responses.filter(
+                          (r) => r.question_id !== question.id
+                        );
+                        setReview({
+                          ...review,
+                          review: {
+                            ...review.review,
+                            responses: newResponses,
+                          },
+                        });
+                      }}
+                    >
+                      Clear
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
           <div className="status-section">
@@ -183,15 +234,33 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
             {review.review.status === "pending" ? (
               <button
                 type="button"
-                onClick={() =>
-                  setReview({
+                onClick={async () => {
+                  const updatedReview: NotebookReview = {
                     ...review,
                     review: {
                       ...review.review,
-                      status: "completed",
+                      status: "completed" as const,
                     },
-                  })
-                }
+                  };
+                  setReview(updatedReview);
+
+                  try {
+                    const response = await fetch(
+                      `${API_BASE_URL}/reviews?id=${encodeURIComponent(updatedReview.notebook_uri)}`,
+                      {
+                        method: "PUT",
+                        headers: createHeaders(user.email, user.apiToken),
+                        body: JSON.stringify(updatedReview),
+                      }
+                    );
+
+                    if (response.ok) {
+                      navigate("/reviews");
+                    }
+                  } catch (error) {
+                    console.error("Failed to update review:", error);
+                  }
+                }}
               >
                 Finalize Review
               </button>
@@ -214,7 +283,7 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
           </div>
 
           <div className="button-group">
-            <button type="submit">Save Changes</button>
+            <button type="submit" disabled={review.review.status === "completed"}>Save Changes</button>
             <button type="button" onClick={() => navigate("/reviews")}>
               Cancel Changes
             </button>

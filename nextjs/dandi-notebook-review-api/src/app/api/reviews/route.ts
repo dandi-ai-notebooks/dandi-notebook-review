@@ -1,7 +1,21 @@
 import { NextRequest } from 'next/server';
 import dbConnect from '../../../lib/mongodb';
 import NotebookReview from '../../../models/NotebookReview';
+import User from '../../../models/User';
 import { corsOptions, corsResponse } from '../../../utils/cors';
+
+async function validateUserToken(userEmail: string, apiToken: string) {
+  if (!userEmail || !apiToken) {
+    return { error: 'User email and API token are required', status: 401 };
+  }
+
+  const user = await User.findOne({ email: userEmail });
+  if (!user || user.apiToken !== apiToken) {
+    return { error: 'Invalid credentials', status: 401 };
+  }
+
+  return { user };
+}
 
 export async function OPTIONS() {
   return corsOptions();
@@ -24,8 +38,14 @@ export async function POST(request: NextRequest) {
   try {
     await dbConnect();
     const userEmail = request.headers.get('X-User-Email');
-    const data = await request.json();
+    const apiToken = request.headers.get('X-Api-Token');
 
+    const validation = await validateUserToken(userEmail!, apiToken!);
+    if ('error' in validation) {
+      return corsResponse({ error: validation.error }, { status: validation.status });
+    }
+
+    const data = await request.json();
     const review = new NotebookReview({
       notebook_uri: data.notebook_uri,
       reviewer_email: userEmail,
@@ -46,6 +66,13 @@ export async function DELETE(request: NextRequest) {
   try {
     await dbConnect();
     const userEmail = request.headers.get('X-User-Email');
+    const apiToken = request.headers.get('X-Api-Token');
+
+    const validation = await validateUserToken(userEmail!, apiToken!);
+    if ('error' in validation) {
+      return corsResponse({ error: validation.error }, { status: validation.status });
+    }
+
     const searchParams = request.nextUrl.searchParams;
     const id = searchParams.get('id');
 
@@ -69,6 +96,13 @@ export async function PUT(request: NextRequest) {
   try {
     await dbConnect();
     const userEmail = request.headers.get('X-User-Email');
+    const apiToken = request.headers.get('X-Api-Token');
+
+    const validation = await validateUserToken(userEmail!, apiToken!);
+    if ('error' in validation) {
+      return corsResponse({ error: validation.error }, { status: validation.status });
+    }
+
     const searchParams = request.nextUrl.searchParams;
     const id = searchParams.get('id');
     const data = await request.json();

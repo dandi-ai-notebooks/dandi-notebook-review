@@ -16,6 +16,7 @@ export interface NotebookReview {
     responses: {
       question_id: string;
       response: string | number | boolean | Record<string, unknown>;
+      rationale?: string;
     }[];
   };
   timestamp_created: string;

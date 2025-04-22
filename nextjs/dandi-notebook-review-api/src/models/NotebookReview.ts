@@ -19,6 +19,10 @@ const NotebookReviewSchema = new mongoose.Schema({
     responses: [{
       question_id: String,
       response: mongoose.Schema.Types.Mixed,
+      rationale: {
+        type: String,
+        required: false
+      }
     }],
   },
   timestamp_created: {

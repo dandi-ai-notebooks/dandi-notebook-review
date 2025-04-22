@@ -16,7 +16,7 @@ function ReviewsPage({ user }: ReviewsPageProps) {
     const fetchReviews = async () => {
       try {
         const response = await fetch(`${API_BASE_URL}/reviews`, {
-          headers: createHeaders(user.email)
+          headers: createHeaders(user.email, user.apiToken)
         });
         if (response.ok) {
           const data = await response.json();
@@ -36,7 +36,7 @@ function ReviewsPage({ user }: ReviewsPageProps) {
     try {
       const response = await fetch(`${API_BASE_URL}/reviews?id=${encodeURIComponent(notebookUri)}`, {
         method: 'DELETE',
-        headers: createHeaders(user.email)
+        headers: createHeaders(user.email, user.apiToken)
       });
 
       if (response.ok) {
@@ -52,7 +52,7 @@ function ReviewsPage({ user }: ReviewsPageProps) {
     try {
       const response = await fetch(`${API_BASE_URL}/reviews`, {
         method: 'POST',
-        headers: createHeaders(user.email),
+        headers: createHeaders(user.email, user.apiToken),
         body: JSON.stringify({
           notebook_uri: newNotebookUri,
           review: {

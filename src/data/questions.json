@@ -1,0 +1,118 @@
+{
+  "questions": [
+    {
+      "id": "describe-dandiset",
+      "text": "How well does the notebook describe the Dandiset?",
+      "options": [
+        { "value": 0, "label": "Not at all or very poorly" },
+        { "value": 1, "label": "Reasonably well" },
+        { "value": 2, "label": "Very well" }
+      ]
+    },
+    {
+      "id": "load-dandiset",
+      "text": "How well does the notebook show how to load information about the Dandiset?",
+      "options": [
+        { "value": 0, "label": "Not at all or very poorly" },
+        { "value": 1, "label": "Reasonably well" },
+        { "value": 2, "label": "Very well" }
+      ]
+    },
+    {
+      "id": "load-nwb",
+      "text": "How well does the notebook show how to load basic information from an NWB file in the Dandiset?",
+      "options": [
+        { "value": 0, "label": "Not at all or very poorly" },
+        { "value": 1, "label": "Reasonably well" },
+        { "value": 2, "label": "Very well" }
+      ]
+    },
+    {
+      "id": "load-nwb-data",
+      "text": "How well does the notebook show how to load data from an NWB file in the Dandiset?",
+      "options": [
+        { "value": 0, "label": "No data is loaded or is done very poorly" },
+        { "value": 1, "label": "One piece of data is loaded" },
+        { "value": 2, "label": "Two independent pieces of data are loaded" },
+        { "value": 3, "label": "Three or more independent pieces of data are loaded" }
+      ]
+    },
+    {
+      "id": "visualize-nwb-data",
+      "text": "How well does the notebook show how to visualize data from an NWB file in the Dandiset?",
+      "options": [
+        { "value": 0, "label": "No data is visualized or is done very poorly" },
+        { "value": 1, "label": "One piece of data is visualized" },
+        { "value": 2, "label": "Two independent pieces of data are visualized" },
+        { "value": 3, "label": "Three or more independent pieces of data are visualized" }
+      ]
+    },
+    {
+      "id": "advanced-visualization",
+      "text": "Does the notebook create an advanced visualization involving multiple types of data from an NWB file in the Dandiset?",
+      "options": [
+        { "value": 0, "label": "No advanced visualization is shown or is done ineffectively" },
+        { "value": 1, "label": "At least one high quality advanced visualization is shown" }
+      ]
+    },
+    {
+      "id": "plot-quality",
+      "text": "What is the quality of the plots in the notebook?",
+      "options": [
+        { "value": 0, "label": "No plots are shown or are done very poorly" },
+        { "value": 1, "label": "Reasonably good quality" },
+        { "value": 2, "label": "Very good quality" }
+      ]
+    },
+    {
+      "id": "plot-issues",
+      "text": "Are there issues with the plots in the notebook?",
+      "options": [
+        { "value": 0, "label": "No issues" },
+        { "value": -1, "label": "Some minor issues only" },
+        { "value": -2, "label": "At least one major issue" },
+        { "value": -3, "label": "Two or more major issues" }
+      ]
+    },
+    {
+      "id": "plot-redundancy",
+      "text": "Is there excessive redundancy between the plots in the notebook?",
+      "options": [
+        { "value": 0, "label": "No excessive redundancy between the plots" },
+        { "value": -1, "label": "Some minor redundancy only" },
+        { "value": -2, "label": "At least one major redundancy between the plots" },
+        { "value": -3, "label": "Two or more major redundancies between the plots" }
+      ]
+    },
+    {
+      "id": "analysis-issues",
+      "text": "Are there issues with the analysis in the notebook?",
+      "options": [
+        { "value": 0, "label": "No issues" },
+        { "value": -1, "label": "Some minor issues only" },
+        { "value": -2, "label": "At least one major issue" },
+        { "value": -3, "label": "Two or more major issues" }
+      ]
+    },
+    {
+      "id": "unsupported-conclusions",
+      "text": "Are there unsupported conclusions in the notebook?",
+      "options": [
+        { "value": 0, "label": "No unsupported conclusions" },
+        { "value": -1, "label": "Some minor unsupported conclusions" },
+        { "value": -2, "label": "At least one major unsupported conclusion" },
+        { "value": -3, "label": "Two or more major unsupported conclusions" }
+      ]
+    },
+    {
+      "id": "other-issues",
+      "text": "Are there other issues with the notebook?",
+      "options": [
+        { "value": 0, "label": "No other issues" },
+        { "value": -1, "label": "Some minor issues only" },
+        { "value": -2, "label": "At least one major issue" },
+        { "value": -3, "label": "Two or more major issues" }
+      ]
+    }
+  ]
+}
