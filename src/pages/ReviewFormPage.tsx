@@ -207,7 +207,7 @@ function ReviewFormPage({ user, onLogin, width, height }: ReviewFormPageProps) {
     <HorizontalSplitter
       width={width}
       height={height}
-      initialSplitterPosition={Math.min(width / 2, 450)}
+      initialSplitterPosition={Math.min(width * 2 / 5, 500)}
     >
       <ReviewPanel
         onSubmit={handleSubmit}
@@ -314,9 +314,20 @@ const ReviewPanel = ({
                   <div className="rationale-field">
                     <textarea
                       className="rationale-textarea"
-                      placeholder="Optional: Rationale for your response"
+                      placeholder="Optional rationale for your response"
                       value={response?.rationale || ""}
                       disabled={review.review.status === "completed"}
+                      style={{ minHeight: "25px" }}
+                      ref={(elem) => {
+                        if (elem) {
+                          elem.style.height = 'auto';
+                          elem.style.height = elem.scrollHeight + 'px';
+                        }
+                      }}
+                      onInput={(e) => {
+                        e.currentTarget.style.height = 'auto';
+                        e.currentTarget.style.height = e.currentTarget.scrollHeight + 'px';
+                      }}
                       onChange={(e) => {
                         const newResponses = [...review.review.responses];
                         const existingIndex = newResponses.findIndex(
