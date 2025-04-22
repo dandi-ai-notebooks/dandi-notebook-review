@@ -98,21 +98,21 @@ function App() {
 
         <Routes>
           <Route
-            path="/"
+            path="/dandi-notebook-review/"
             element={
-              user ? <Navigate to="/reviews" /> : <LoginPage onLogin={handleLogin} />
+              user ? <Navigate to="/dandi-notebook-review/reviews" /> : <LoginPage onLogin={handleLogin} />
             }
           />
           <Route
-            path="/reviews"
+            path="/dandi-notebook-review/reviews"
             element={user ? <ReviewsPage user={user} /> : <Navigate to="/" />}
           />
           <Route
-            path="/review"
+            path="/dandi-notebook-review/review"
             element={user ? <ReviewFormPage user={user} /> : <Navigate to="/" />}
           />
           <Route
-          path="/admin"
+          path="/dandi-notebook-review/admin"
           element={adminState ? <AdminPage adminToken={adminState.token} /> : <LoginPage onLogin={handleAdminLogin} isAdminLogin />}
           />
         </Routes>

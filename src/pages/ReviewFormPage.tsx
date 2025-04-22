@@ -55,7 +55,7 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
       );
 
       if (response.ok) {
-        navigate("/reviews");
+        navigate("/dandi-notebook-review/reviews");
       }
     } catch (error) {
       console.error("Failed to update review:", error);
@@ -99,7 +99,7 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
           Create New Review
         </button>
         <button
-          onClick={() => navigate('/reviews')}
+          onClick={() => navigate('/dandi-notebook-review/s')}
           className="cancel-button"
         >
           Cancel
@@ -254,7 +254,7 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
                     );
 
                     if (response.ok) {
-                      navigate("/reviews");
+                      navigate("/dandi-notebook-review/reviews");
                     }
                   } catch (error) {
                     console.error("Failed to update review:", error);
@@ -283,7 +283,7 @@ function ReviewFormPage({ user }: ReviewFormPageProps) {
 
           <div className="button-group">
             <button type="submit" disabled={review.review.status === "completed"}>Save Changes</button>
-            <button type="button" onClick={() => navigate("/reviews")}>
+            <button type="button" onClick={() => navigate("/dandi-notebook-review/reviews")}>
               Cancel Changes
             </button>
           </div>

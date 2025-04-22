@@ -66,7 +66,7 @@ function ReviewsPage({ user }: ReviewsPageProps) {
         const newReview = await response.json();
         setReviews([...reviews, newReview]);
         setNewNotebookUri('');
-        navigate(`/review?uri=${encodeURIComponent(newReview.notebook_uri)}`);
+        navigate(`/dandi-notebook-review/review?uri=${encodeURIComponent(newReview.notebook_uri)}`);
       }
     } catch (error) {
       console.error('Failed to create review:', error);
@@ -92,7 +92,7 @@ function ReviewsPage({ user }: ReviewsPageProps) {
         {reviews.map((review) => (
           <div key={review.notebook_uri} className="review-item">
             <div className="review-item-content">
-              <Link to={`/review?uri=${encodeURIComponent(review.notebook_uri)}`}>
+              <Link to={`/dandi-notebook-review/review?uri=${encodeURIComponent(review.notebook_uri)}`}>
                 <h3>{review.notebook_uri}</h3>
                 <div className="review-details">
                   <span className={`status status-${review.review.status}`}>
