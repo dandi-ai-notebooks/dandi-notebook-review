@@ -110,7 +110,7 @@
       "options": [
         { "value": -2, "label": "Very ineffective" },
         { "value": -1, "label": "Somewhat ineffective" },
-        { "value": 0, "label": "Neither effective nor ineffective" },
+        { "value": 0, "label": "Neutral" },
         { "value": 1, "label": "Somewhat effective" },
         { "value": 2, "label": "Very effective" }
       ]
