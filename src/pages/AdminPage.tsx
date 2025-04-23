@@ -115,7 +115,7 @@ function AdminPage({ adminToken }: AdminPageProps) {
   };
 
   return (
-    <div className="admin-page">
+    <div className="admin-page" style={{ height: 'calc(100vh - 120px)', overflowY: 'auto', padding: '20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <h2>User Management</h2>
         <button

@@ -74,7 +74,7 @@ function ReviewsPage({ user }: ReviewsPageProps) {
   };
 
   return (
-    <div className="reviews-page">
+    <div className="reviews-page" style={{ height: 'calc(100vh - 120px)', overflowY: 'auto', padding: '20px' }}>
       <h2>Notebook Reviews</h2>
 
       <form onSubmit={handleCreateReview} className="new-review-form">
