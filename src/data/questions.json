@@ -4,64 +4,64 @@
       "id": "describe-dandiset",
       "text": "How well does the notebook describe the Dandiset?",
       "options": [
-        { "value": 0, "label": "Not at all or very poorly" },
+        { "value": 2, "label": "Very well" },
         { "value": 1, "label": "Reasonably well" },
-        { "value": 2, "label": "Very well" }
+        { "value": 0, "label": "Not at all or very poorly" }
       ]
     },
     {
       "id": "load-dandiset",
       "text": "How well does the notebook show how to load information about the Dandiset?",
       "options": [
-        { "value": 0, "label": "Not at all or very poorly" },
+        { "value": 2, "label": "Very well" },
         { "value": 1, "label": "Reasonably well" },
-        { "value": 2, "label": "Very well" }
+        { "value": 0, "label": "Not at all or very poorly" }
       ]
     },
     {
       "id": "load-nwb",
-      "text": "How well does the notebook show how to load basic information from an NWB file in the Dandiset?",
+      "text": "How well does the notebook show how to load basic meta information from an NWB file in the Dandiset?",
       "options": [
-        { "value": 0, "label": "Not at all or very poorly" },
+        { "value": 2, "label": "Very well" },
         { "value": 1, "label": "Reasonably well" },
-        { "value": 2, "label": "Very well" }
+        { "value": 0, "label": "Not at all or very poorly" }
       ]
     },
     {
       "id": "load-nwb-data",
-      "text": "How well does the notebook show how to load data from an NWB file in the Dandiset?",
+      "text": "How many different types of (non-meta) data are loaded from the NWB file in the Dandiset?",
       "options": [
-        { "value": 0, "label": "No data is loaded or is done very poorly" },
-        { "value": 1, "label": "One piece of data is loaded" },
-        { "value": 2, "label": "Two independent pieces of data are loaded" },
-        { "value": 3, "label": "Three or more independent pieces of data are loaded" }
+        { "value": 3, "label": "Three or more types of data are loaded" },
+        { "value": 2, "label": "Two types of data are loaded" },
+        { "value": 1, "label": "One type of data is loaded" },
+        { "value": 0, "label": "No data is loaded or loading is poor" }
       ]
     },
     {
       "id": "visualize-nwb-data",
-      "text": "How well does the notebook show how to visualize data from an NWB file in the Dandiset?",
+      "text": "How many different types of data visualizations are shown in the notebook?",
       "options": [
-        { "value": 0, "label": "No data is visualized or is done very poorly" },
-        { "value": 1, "label": "One piece of data is visualized" },
-        { "value": 2, "label": "Two independent pieces of data are visualized" },
-        { "value": 3, "label": "Three or more independent pieces of data are visualized" }
+        { "value": 3, "label": "Three or more types of data visualizations are presented" },
+        { "value": 2, "label": "Two types of data visualizations are presented" },
+        { "value": 1, "label": "One type of data visualization is presented" },
+        { "value": 0, "label": "No data is visualized or visualization is poor" }
       ]
     },
     {
       "id": "advanced-visualization",
       "text": "Does the notebook create an advanced visualization involving multiple types of data from an NWB file in the Dandiset?",
       "options": [
-        { "value": 0, "label": "No advanced visualization is shown or is done ineffectively" },
-        { "value": 1, "label": "At least one high quality advanced visualization is shown" }
+        { "value": 1, "label": "At least one high quality advanced visualization is shown" },
+        { "value": 0, "label": "No advanced visualization is shown or visualization is ineffective" }
       ]
     },
     {
       "id": "plot-quality",
       "text": "What is the quality of the plots in the notebook?",
       "options": [
-        { "value": 0, "label": "No plots are shown or are done very poorly" },
-        { "value": 1, "label": "Reasonably good quality" },
-        { "value": 2, "label": "Very good quality" }
+        { "value": 1, "label": "Excellent: Plots are generally of publication quality"},
+        { "value": 0, "label": "Good: Plots are generally of good quality" },
+        { "value": -1, "label": "Bad: Plots are missing or are generally not interpretable or show misleading information" }
       ]
     },
     {
@@ -76,22 +76,22 @@
     },
     {
       "id": "plot-redundancy",
-      "text": "Is there excessive redundancy between the plots in the notebook?",
+      "text": "Is there unnecessary redundancy between the plots in the notebook?",
       "options": [
-        { "value": 0, "label": "No excessive redundancy between the plots" },
-        { "value": -1, "label": "Some minor redundancy only" },
-        { "value": -2, "label": "At least one major redundancy between the plots" },
-        { "value": -3, "label": "Two or more major redundancies between the plots" }
+        { "value": 0, "label": "No unnecessary redundancy in plots" },
+        { "value": -1, "label": "Some minor unnecessary redundancy only" },
+        { "value": -2, "label": "At least one major redundancy between plots" },
+        { "value": -3, "label": "Two or more major redundancies between plots" }
       ]
     },
     {
       "id": "unsupported-conclusions",
-      "text": "Are there unsupported conclusions in the notebook?",
+      "text": "Are there unsupported statements or conclusions in the notebook?",
       "options": [
-        { "value": 0, "label": "No unsupported conclusions" },
-        { "value": -1, "label": "Some minor unsupported conclusions" },
-        { "value": -2, "label": "At least one major unsupported conclusion" },
-        { "value": -3, "label": "Two or more major unsupported conclusions" }
+        { "value": 0, "label": "No unsupported statements or conclusions" },
+        { "value": -1, "label": "Some minor unsupported statements or conclusions" },
+        { "value": -2, "label": "At least one major unsupported statement or conclusion" },
+        { "value": -3, "label": "Two or more major unsupported statements or conclusions" }
       ]
     },
     {
@@ -106,13 +106,13 @@
     },
     {
       "id": "overall-effectiveness",
-      "text": "What is your overall rating of the effectiveness of this notebook for getting started loading, visualizing, and analyzing this Dataset?",
+      "text": "What is your overall rating of the effectiveness of this notebook for getting started loading, visualizing, and analyzing this Dandiset?",
       "options": [
-        { "value": -2, "label": "Very ineffective" },
-        { "value": -1, "label": "Somewhat ineffective" },
-        { "value": 0, "label": "Neutral" },
+        { "value": 2, "label": "Very effective" },
         { "value": 1, "label": "Somewhat effective" },
-        { "value": 2, "label": "Very effective" }
+        { "value": 0, "label": "Neutral" },
+        { "value": -1, "label": "Somewhat ineffective" },
+        { "value": -2, "label": "Very ineffective" }
       ]
     }
   ]
