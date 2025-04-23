@@ -103,6 +103,17 @@
         { "value": -2, "label": "At least one major other issue" },
         { "value": -3, "label": "Two or more major other issues" }
       ]
+    },
+    {
+      "id": "overall-effectiveness",
+      "text": "What is your overall rating of the effectiveness of this notebook for getting started loading, visualizing, and analyzing this Dataset?",
+      "options": [
+        { "value": -2, "label": "Very ineffective" },
+        { "value": -1, "label": "Somewhat ineffective" },
+        { "value": 0, "label": "Neither effective nor ineffective" },
+        { "value": 1, "label": "Somewhat effective" },
+        { "value": 2, "label": "Very effective" }
+      ]
     }
   ]
 }
