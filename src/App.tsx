@@ -48,6 +48,10 @@ function App() {
       });
 
       if (response.ok) {
+        // Clear admin state if it exists
+        localStorage.removeItem('admin');
+        setAdminState(null);
+
         const userData = await response.json();
         localStorage.setItem('user', JSON.stringify(userData));
         setUser(userData);
@@ -73,6 +77,10 @@ function App() {
       });
 
       if (response.ok) {
+        // Clear user state if it exists
+        localStorage.removeItem('user');
+        setUser(null);
+
         const adminData = { token };
         localStorage.setItem('admin', JSON.stringify(adminData));
         setAdminState(adminData);
