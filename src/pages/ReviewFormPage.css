@@ -19,6 +19,17 @@
   font-weight: 500;
 }
 
+.readonly-message {
+  background: #ebf3fe;
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin: 12px 0;
+  color: #1a73e8;
+  font-size: 14px;
+  line-height: 1.5;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
 .review-instructions {
   background: #f8f9fa;
   border-radius: 4px;
@@ -116,6 +127,12 @@ button[type="submit"] {
   color: white;
 }
 
+button[type="submit"]:disabled {
+  background: #dadce0;
+  color: #5f6368;
+  cursor: not-allowed;
+}
+
 button[type="button"] {
   background: #f1f3f4;
   color: #202124;
@@ -134,8 +151,6 @@ button[type="button"] {
   padding-right: 12px;
 }
 
-.notebook-panel {
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+.modified {
+  background-color: #ffeeee;
 }

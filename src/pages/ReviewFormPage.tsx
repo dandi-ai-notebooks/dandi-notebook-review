@@ -101,7 +101,14 @@ function ReviewFormPage({ user, onLogin, width, height }: ReviewFormPageProps) {
   const uri = searchParams.get("url");
   const navigate = useNavigate();
   const [review, setReview] = useState<NotebookReview | null>(null);
+  const [originalReview, setOriginalReview] = useState<NotebookReview | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const hasChanges = () => {
+    if (!review || !originalReview) return false;
+    return JSON.stringify(review.review.responses) !== JSON.stringify(originalReview.review.responses) ||
+           review.review.status !== originalReview.review.status;
+  };
 
   useEffect(() => {
     if (!user) return;
@@ -116,7 +123,9 @@ function ReviewFormPage({ user, onLogin, width, height }: ReviewFormPageProps) {
             (r: NotebookReview) => r.notebook_uri === uri
           );
           if (currentReview) {
-            setReview(currentReview);
+            const reviewData = currentReview;
+            setReview(reviewData);
+            setOriginalReview(JSON.parse(JSON.stringify(reviewData)));
           }
         }
       } catch (error) {
@@ -216,6 +225,7 @@ function ReviewFormPage({ user, onLogin, width, height }: ReviewFormPageProps) {
         user={user}
         width={0}
         height={0}
+        hasChanges={hasChanges}
       />
 
       <div className="notebook-panel">
@@ -236,7 +246,8 @@ const ReviewPanel = ({
   setReview,
   user,
   width,
-  height
+  height,
+  hasChanges
 }: {
   onSubmit: (e: FormEvent) => void;
   review: NotebookReview;
@@ -244,12 +255,18 @@ const ReviewPanel = ({
   user: User;
   width: number;
   height: number;
+  hasChanges: () => boolean;
 }) => {
   const navigate = useNavigate();
   return (
-    <div style={{position: "relative", width, height, overflowY: "auto"}}>
+    <div style={{position: "relative", width, height, overflowY: "auto"}} className={hasChanges() ? "modified" : ""}>
       <div style={{ padding: "1rem" }}>
         <h2>Review Dandiset Notebook</h2>
+        {review.review.status === "completed" && (
+          <p className="readonly-message">
+            To edit this review, set status to pending at the bottom of the form.
+          </p>
+        )}
         <p className="review-instructions">
           To review this notebook:
           <br />
@@ -439,14 +456,14 @@ const ReviewPanel = ({
           </div>
 
           <div className="button-group">
-            <button type="submit" disabled={review.review.status === "completed"}>
+            <button type="submit" disabled={review.review.status === "completed" || !hasChanges()}>
               Save Changes
             </button>
             <button
               type="button"
               onClick={() => navigate("/dandi-notebook-review/reviews")}
             >
-              Cancel Changes
+              {hasChanges() ? "Cancel Changes" : "Cancel"}
             </button>
           </div>
         </form>
