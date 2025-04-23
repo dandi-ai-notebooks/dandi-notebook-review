@@ -85,16 +85,6 @@
       ]
     },
     {
-      "id": "analysis-issues",
-      "text": "Are there issues with the analysis in the notebook?",
-      "options": [
-        { "value": 0, "label": "No issues" },
-        { "value": -1, "label": "Some minor issues only" },
-        { "value": -2, "label": "At least one major issue" },
-        { "value": -3, "label": "Two or more major issues" }
-      ]
-    },
-    {
       "id": "unsupported-conclusions",
       "text": "Are there unsupported conclusions in the notebook?",
       "options": [
@@ -109,9 +99,9 @@
       "text": "Are there other issues with the notebook?",
       "options": [
         { "value": 0, "label": "No other issues" },
-        { "value": -1, "label": "Some minor issues only" },
-        { "value": -2, "label": "At least one major issue" },
-        { "value": -3, "label": "Two or more major issues" }
+        { "value": -1, "label": "Some minor other issues only" },
+        { "value": -2, "label": "At least one major other issue" },
+        { "value": -3, "label": "Two or more major other issues" }
       ]
     }
   ]
