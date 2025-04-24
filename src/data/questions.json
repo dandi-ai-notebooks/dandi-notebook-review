@@ -2,7 +2,7 @@
   "questions": [
     {
       "id": "describe-dandiset",
-      "text": "How well does the notebook describe the Dandiset?",
+      "text": "How well does the notebook describe the Dandiset? If you are not familiar with the Dandiset, you should assume that the description is accurate and rate it based on the quality of the description.",
       "options": [
         { "value": 2, "label": "Very well" },
         { "value": 1, "label": "Reasonably well" },
@@ -59,8 +59,8 @@
       "id": "plot-quality",
       "text": "What is the quality of the plots in the notebook?",
       "options": [
-        { "value": 1, "label": "Excellent: Plots are generally of publication quality"},
-        { "value": 0, "label": "Good: Plots are generally of good quality" },
+        { "value": 1, "label": "Excellent: Plots are generally of excellent quality. They make a point about the data, are easily interpretable, and do not contain unnecessary elements."},
+        { "value": 0, "label": "Good: Plots are generally of good quality. They show an interpretable sample of data but are not very informative or refined." },
         { "value": -1, "label": "Bad: Plots are missing or are generally not interpretable or show misleading information" }
       ]
     },
@@ -85,13 +85,13 @@
       ]
     },
     {
-      "id": "unsupported-conclusions",
-      "text": "Are there unsupported statements or conclusions in the notebook?",
+      "id": "unsupported-interpretations",
+      "text": "Are there unsupported interpretations of the plots or results in the notebook?",
       "options": [
-        { "value": 0, "label": "No unsupported statements or conclusions" },
-        { "value": -1, "label": "Some minor unsupported statements or conclusions" },
-        { "value": -2, "label": "At least one major unsupported statement or conclusion" },
-        { "value": -3, "label": "Two or more major unsupported statements or conclusions" }
+        { "value": 0, "label": "No unsupported interpretations" },
+        { "value": -1, "label": "Some minor unsupported interpretations" },
+        { "value": -2, "label": "One major unsupported interpretation" },
+        { "value": -3, "label": "Two or more major unsupported interpretations" }
       ]
     },
     {
@@ -127,7 +127,7 @@
     },
     {
       "id": "data-science-expertise",
-      "text": "What is your level of expertise in data science?",
+      "text": "What is your level of expertise in data science / data analysis in Python?",
       "options": [
         { "value": 2, "label": "Expert" },
         { "value": 1, "label": "Intermediate" },
