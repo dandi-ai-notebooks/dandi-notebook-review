@@ -114,6 +114,56 @@
         { "value": -1, "label": "Somewhat ineffective" },
         { "value": -2, "label": "Very ineffective" }
       ]
+    },
+    {
+      "id": "neuroscience-expertise",
+      "text": "What is your level of expertise in neuroscience?",
+      "options": [
+        { "value": 2, "label": "Expert" },
+        { "value": 1, "label": "Intermediate" },
+        { "value": 0, "label": "Novice" }
+      ],
+      "about_reviewer": true
+    },
+    {
+      "id": "data-science-expertise",
+      "text": "What is your level of expertise in data science?",
+      "options": [
+        { "value": 2, "label": "Expert" },
+        { "value": 1, "label": "Intermediate" },
+        { "value": 0, "label": "Novice" }
+      ],
+      "about_reviewer": true
+    },
+    {
+      "id": "nwb-dandi-expertise",
+      "text": "What is your level of expertise in using NWB/DANDI?",
+      "options": [
+        { "value": 2, "label": "Expert" },
+        { "value": 1, "label": "Intermediate" },
+        { "value": 0, "label": "Novice" }
+      ],
+      "about_reviewer": true
+    },
+    {
+      "id": "dandiset-prior-familiarity",
+      "text": "What is your level of prior familiarity with this Dandiset or its subject matter?",
+      "options": [
+        { "value": 2, "label": "Very familiar" },
+        { "value": 1, "label": "Somewhat familiar" },
+        { "value": 0, "label": "Not at all familiar" }
+      ],
+      "about_reviewer": true
+    },
+    {
+      "id": "notebook-rating-confidence",
+      "text": "How confident are you in your rating of this notebook?",
+      "options": [
+        { "value": 2, "label": "Very confident" },
+        { "value": 1, "label": "Somewhat confident" },
+        { "value": 0, "label": "Not at all confident" }
+      ],
+      "about_reviewer": true
     }
   ]
 }

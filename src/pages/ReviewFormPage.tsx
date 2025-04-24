@@ -324,7 +324,7 @@ const ReviewPanel = ({
                             });
                           }}
                         />
-                        &nbsp;&nbsp;[{option.value}] {option.label}
+                        &nbsp;&nbsp;{!question.about_reviewer && `[${option.value}] `}{option.label}
                       </label>
                     ))}
                   </div>
