@@ -28,21 +28,21 @@
       ]
     },
     {
-      "id": "visualize-analyze-data",
-      "text": "Do you feel more prepared to visualize and analyze data from this Dandiset after reading the notebook?",
+      "id": "visualization-helpful",
+      "text": "Did the visualizations in the notebook generally help you understand key aspects of the data?",
       "options": [
-        { "value": 2, "label": "Yes, the examples gave me a strong starting point" },
-        { "value": 1, "label": "Somewhat, but I’d need to look up more examples" },
-        { "value": 0, "label": "No, the notebook didn’t help much with this" }
+        { "value": 2, "label": "Yes, they made important points clear" },
+        { "value": 1, "label": "Somewhat" },
+        { "value": 0, "label": "No, the visualizations were generally confusing or unhelpful" }
       ]
     },
     {
-      "id": "visualization-helpful",
-      "text": "Did the visualizations in the notebook help you understand key aspects of the data?",
+      "id": "visualization-issues",
+      "text": "Did any of the visualizations make it harder to understand the data (e.g., due to poor formatting, unclear axes, or misleading displays)?",
       "options": [
-        { "value": 2, "label": "Yes, they made important points clear" },
-        { "value": 1, "label": "Somewhat, a few were helpful" },
-        { "value": 0, "label": "No, the visualizations were confusing or unhelpful" }
+        { "value": 0, "label": "No, the visualizations were clear and helpful" },
+        { "value": -1, "label": "One or more visualizations were unclear or hard to interpret" },
+        { "value": -2, "label": "Yes, one or more visualizations were misleading, confusing, or had substantial issues" }
       ]
     },
     {
@@ -61,15 +61,6 @@
         { "value": 2, "label": "Very well – they revealed important patterns or relationships" },
         { "value": 1, "label": "Somewhat – they hinted at structure, but lacked depth" },
         { "value": 0, "label": "Poorly – they didn’t help me understand the data structure" }
-      ]
-    },
-    {
-      "id": "visualization-issues",
-      "text": "Did any of the visualizations make it harder to understand the data (e.g., due to poor formatting, unclear axes, or misleading displays)?",
-      "options": [
-        { "value": 0, "label": "No, the visualizations were clear and helpful" },
-        { "value": -1, "label": "A few were unclear or hard to interpret" },
-        { "value": -2, "label": "Yes, some visualizations were misleading, confusing, or had substantial issues" }
       ]
     },
     {
