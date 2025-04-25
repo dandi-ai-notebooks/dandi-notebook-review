@@ -98,11 +98,41 @@ interface ReviewFormPageProps {
 
 function ReviewFormPage({ user, onLogin, width, height }: ReviewFormPageProps) {
   const [searchParams] = useSearchParams();
-  const uri = searchParams.get("url");
+  const urlParam = searchParams.get("url");
+  const uri = urlParam ?
+    (urlParam.startsWith('http://') || urlParam.startsWith('https://') ?
+      urlParam :
+      (() => {
+        try {
+          const decoded = atob(urlParam);
+          if (!decoded.startsWith('http://') && !decoded.startsWith('https://')) {
+            throw new Error('Decoded URL must start with http:// or https://');
+          }
+          return decoded;
+        } catch (error) {
+          console.error('Error decoding URL:', error);
+          return null;
+        }
+      })()
+    ) : null;
   const navigate = useNavigate();
   const [review, setReview] = useState<NotebookReview | null>(null);
   const [originalReview, setOriginalReview] = useState<NotebookReview | null>(null);
   const [loading, setLoading] = useState(true);
+
+  // Add keyboard shortcut (Ctrl+Shift+H) to display the actual URL in the console
+  // This is useful for debugging and verification when working with base64 encoded URLs,
+  // allowing developers to see the decoded URL that's being used
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.shiftKey && e.key === "H") {
+        console.log("Current notebook URL:", uri);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [uri]);
 
   const hasChanges = () => {
     if (!review || !originalReview) return false;
