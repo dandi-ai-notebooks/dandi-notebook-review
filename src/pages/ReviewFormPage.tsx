@@ -150,7 +150,7 @@ function ReviewFormPage({ user, onLogin, width, height }: ReviewFormPageProps) {
         if (response.ok) {
           const reviews = await response.json();
           const currentReview = reviews.find(
-            (r: NotebookReview) => r.notebook_uri === uri
+            (r: NotebookReview) => r.notebook_uri === urlParam
           );
           if (currentReview) {
             const reviewData = currentReview;
@@ -165,7 +165,7 @@ function ReviewFormPage({ user, onLogin, width, height }: ReviewFormPageProps) {
       }
     };
     fetchReview();
-  }, [uri, user]);
+  }, [urlParam, user]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -209,7 +209,7 @@ function ReviewFormPage({ user, onLogin, width, height }: ReviewFormPageProps) {
                 method: "POST",
                 headers: createHeaders(user.email, user.apiToken),
                 body: JSON.stringify({
-                  notebook_uri: uri,
+                  notebook_uri: urlParam,
                   review: {
                     status: "pending",
                     responses: [],
@@ -239,8 +239,8 @@ function ReviewFormPage({ user, onLogin, width, height }: ReviewFormPageProps) {
     );
   }
 
-  const nbfiddleNotebookUrl = `https://nbfiddle.app?url=${review.notebook_uri}&renderonly=1&fullwidth=1`;
-  // const nbfiddleNotebookUrl = `http://localhost:5174?url=${review.notebook_uri}&renderonly=1&fullwidth=1`;
+  const nbfiddleNotebookUrl = `https://nbfiddle.app?url=${uri}&renderonly=1&fullwidth=1`;
+  // const nbfiddleNotebookUrl = `http://localhost:5174?url=${uri}&renderonly=1&fullwidth=1`;
 
   return (
     <HorizontalSplitter
@@ -252,6 +252,7 @@ function ReviewFormPage({ user, onLogin, width, height }: ReviewFormPageProps) {
         onSubmit={handleSubmit}
         review={review}
         setReview={setReview}
+        urlParam={urlParam || ""}
         user={user}
         width={0}
         height={0}
@@ -274,6 +275,7 @@ const ReviewPanel = ({
   onSubmit,
   review,
   setReview,
+  urlParam,
   user,
   width,
   height,
@@ -282,6 +284,7 @@ const ReviewPanel = ({
   onSubmit: (e: FormEvent) => void;
   review: NotebookReview;
   setReview: React.Dispatch<React.SetStateAction<NotebookReview | null>>;
+  urlParam: string;
   user: User;
   width: number;
   height: number;
@@ -448,7 +451,7 @@ const ReviewPanel = ({
                   try {
                     const response = await fetch(
                       `${API_BASE_URL}/reviews?id=${encodeURIComponent(
-                        updatedReview.notebook_uri
+                        urlParam
                       )}`,
                       {
                         method: "PUT",
