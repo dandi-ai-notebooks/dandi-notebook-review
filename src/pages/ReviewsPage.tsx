@@ -47,8 +47,7 @@ function ReviewsPage({ user }: ReviewsPageProps) {
     }
   };
 
-  const handleCreateReview = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleCreateReview = async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/reviews`, {
         method: 'POST',
@@ -77,7 +76,7 @@ function ReviewsPage({ user }: ReviewsPageProps) {
     <div className="reviews-page" style={{ height: 'calc(100vh - 120px)', overflowY: 'auto', padding: '20px' }}>
       <h2>Notebook Reviews</h2>
 
-      <form onSubmit={handleCreateReview} className="new-review-form">
+      <div className="new-review-form">
         <input
           type="text"
           value={newNotebookUri}
@@ -85,15 +84,23 @@ function ReviewsPage({ user }: ReviewsPageProps) {
           placeholder="Enter notebook URI (GitHub URL)"
           required
         />
-        <button type="submit">Create New Review</button>
-      </form>
+        <button
+          onClick={() => {
+            // convert notebook uri to base64
+            setNewNotebookUri(btoa(newNotebookUri));
+          }}
+        >b64</button>
+        <button onClick={() => {
+          handleCreateReview()
+        }}>Create New Review</button>
+      </div>
 
       <div className="reviews-list">
         {reviews.map((review) => (
           <div key={review.notebook_uri} className="review-item">
             <div className="review-item-content">
               <Link to={`/dandi-notebook-review/review?url=${review.notebook_uri}`}>
-                <h3>{review.notebook_uri}</h3>
+                <h3>{abbreviate(review.notebook_uri)}</h3>
                 <div className="review-details">
                   <span className={`status status-${review.review.status}`}>
                     {review.review.status}
@@ -119,6 +126,13 @@ function ReviewsPage({ user }: ReviewsPageProps) {
       </div>
     </div>
   );
+}
+
+const abbreviate = (x: string) => {
+  if (x.length > 60) {
+    return x.slice(0, 30) + " ..." + x.slice(x.length - 30);
+  }
+  return x;
 }
 
 export default ReviewsPage;
