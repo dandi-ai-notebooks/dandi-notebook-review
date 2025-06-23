@@ -91,6 +91,24 @@
       ]
     },
     {
+      "id": "neurosift-exploration",
+      "text": "Briefly explore the provided Neurosift pages associated with this Dandiset. Were any data types in the explored NWB file not shown or discussed in the notebook?",
+      "options": [
+        { "value": 0, "label": "No, it comprehensively represents the data" },
+        { "value": -1, "label": "Yes, it omitted one or a few important data types or features" },
+        { "value": -2, "label": "Yes, it omitted several important data types or features" }
+      ]
+    },
+    {
+      "id": "neurosift-accuracy",
+      "text": "Briefly explore the provided Neurosift pages associated with this Dandiset. Did the notebook inaccurately represent any data?",
+      "options": [
+        { "value": 0, "label": "No, it accurately represents the data as far I can tell" },
+        { "value": -1, "label": "Yes, one or a few descriptions or visualizations were incorrect" },
+        { "value": -2, "label": "Yes, several descriptions or visualizations were incorrect" }
+      ]
+    },
+    {
       "id": "overall-helpfulness",
       "text": "Overall, how helpful was this notebook for getting started with this Dandiset?",
       "options": [
