@@ -223,6 +223,27 @@ function AdminPage({ adminToken }: AdminPageProps) {
           <button onClick={() => setShowReviews(!showReviews)}>
             {showReviews ? 'Collapse' : 'Expand'}
           </button>
+          <button
+            onClick={async () => {
+              try {
+                const response = await fetch(`${API_BASE_URL}/admin/reviews`, {
+                  headers: createAdminHeaders(adminToken)
+                });
+                if (response.ok) {
+                  const data = await response.json();
+                  downloadBlob(
+                    JSON.stringify(data, null, 2),
+                    `reviews-export-${new Date().toISOString().split('T')[0]}.json`,
+                    'application/json'
+                  );
+                }
+              } catch (error) {
+                console.error('Failed to export reviews:', error);
+              }
+            }}
+          >
+            Download Reviews
+          </button>
         </div>
         <div className="reviews-list" style={{ display: showReviews ? 'block' : 'none' }}>
           <table>
